@@ -2,6 +2,7 @@ package co.duvan.security.app.controller;
 
 import co.duvan.security.app.http.AuthResponse;
 import co.duvan.security.app.http.LoginRequest;
+import co.duvan.security.app.http.RegisterRequest;
 import co.duvan.security.app.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(request));
 
