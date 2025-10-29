@@ -13,10 +13,12 @@ public class AuthService {
 
     //* Vars
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
     //* Constructor
-    public AuthService(UserRepository userRepository) {
+    public AuthService(UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
 
     //* Methods
@@ -36,7 +38,7 @@ public class AuthService {
 
         userRepository.save(user);
 
-        return new AuthResponse("");
+        return new AuthResponse(jwtService.getToken(user));
 
     }
 
