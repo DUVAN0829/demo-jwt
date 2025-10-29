@@ -6,6 +6,8 @@ public class AuthResponse {
     private String token;
 
     //* Constructor
+    public AuthResponse() {}
+
     public AuthResponse(String token) {
         this.token = token;
     }
