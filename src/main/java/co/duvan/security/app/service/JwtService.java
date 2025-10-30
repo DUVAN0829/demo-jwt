@@ -25,6 +25,7 @@ public class JwtService {
 
     }
 
+    //* Methods
     private String getToken(Map<String, Object> extraClaims, UserDetails user) {
 
         return Jwts.builder()
