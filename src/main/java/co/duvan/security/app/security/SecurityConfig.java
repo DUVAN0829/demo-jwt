@@ -1,9 +1,9 @@
 package co.duvan.security.app.security;
 
 import co.duvan.security.app.jwt.JWTAuthenticationFilter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -26,13 +26,16 @@ public class SecurityConfig {
     }
 
     //* Methods
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authRequest ->
                         authRequest
                                 .requestMatchers("/auth/**").permitAll()
-                                .anyRequest().authenticated())
+                                .requestMatchers("/h2-console/**").permitAll()
+                                .anyRequest().authenticated()
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(provider)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
