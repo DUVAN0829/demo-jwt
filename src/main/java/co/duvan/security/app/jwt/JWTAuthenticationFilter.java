@@ -24,13 +24,11 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     //* Vars
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
     private final UserRepository repository;
 
     //* Constructor
-    public JWTAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService, UserRepository repository) {
+    public JWTAuthenticationFilter(JwtService jwtService, UserRepository repository) {
         this.jwtService = jwtService;
-        this.userDetailsService = userDetailsService;
         this.repository = repository;
     }
 
