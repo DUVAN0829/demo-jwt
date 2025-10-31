@@ -1,5 +1,7 @@
 package co.duvan.security.app.jwt;
 
+import co.duvan.security.app.model.User;
+import co.duvan.security.app.repository.UserRepository;
 import co.duvan.security.app.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,11 +25,13 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     //* Vars
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final UserRepository repository;
 
     //* Constructor
-    public JWTAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService) {
+    public JWTAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService, UserRepository repository) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
+        this.repository = repository;
     }
 
     //* Methods
@@ -46,7 +50,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails user = userDetailsService.loadUserByUsername(username); //* Algo relacionado a la DB
+            User user = repository.findByUsername(username).orElseThrow(); //* Algo relacionado a la DB
 
             if(jwtService.isTokenValid(token, user)){
 
