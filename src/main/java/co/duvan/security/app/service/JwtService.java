@@ -1,16 +1,14 @@
 package co.duvan.security.app.service;
 
+import co.duvan.security.app.model.User;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtParserBuilder;
+
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,17 +21,21 @@ public class JwtService {
     private final static String SECRET_KEY = "CZc3D9WKy7CdKnonwTWowwXL0587hnkUDnIRQlxYN1M=";
 
     //* Methods
-    public String getToken(UserDetails user) {
+    public String getToken(User user) {
 
         return getToken(new HashMap<>(), user);
 
     }
 
     //* Methods
-    private String getToken(Map<String, Object> extraClaims, UserDetails user) {
+    //* Crear token
+    private String getToken(Map<String, Object> extraClaims, User user) {
 
         return Jwts.builder()
                 .claims(extraClaims)
+                .claim("userId", user.getId())
+                .claim("firstName", user.getFirstName())
+                .claim("lastname", user.getLastName())
                 .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
@@ -56,10 +58,10 @@ public class JwtService {
 
     }
 
-    public boolean isTokenValid(String token, UserDetails user) {
+    public boolean isTokenValid(String token, User user) {
 
         final String username = getUsernameFromToken(token);
-        return (username.equals(user.getUsername()) && !isTokenExpired(token));
+        return (username.equals(user.getUsername()) && !isTokenExpired(token)); //* El token se valida si el user es el mismo del token y de la DB
 
     }
 
