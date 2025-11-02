@@ -48,7 +48,7 @@ public class AuthService {
         user.setFirstName(request.getFirstname());
         user.setLastName(request.getLastname());
         user.setCountry(request.getCountry());
-        user.setRole(Role.USER);
+        user.setRole(Role.ADMIN);
 
         userRepository.save(user);
 

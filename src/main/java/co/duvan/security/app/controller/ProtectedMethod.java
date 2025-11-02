@@ -1,6 +1,7 @@
 package co.duvan.security.app.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,8 +12,15 @@ public class ProtectedMethod {
 
     //* Method
     @GetMapping("/demo")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<String> demo() {
         return ResponseEntity.ok("Welcome to security endpoint");
+    }
+
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> admin() {
+        return ResponseEntity.ok("Welcome ADMIN");
     }
 
 }
